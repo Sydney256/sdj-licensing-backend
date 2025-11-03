@@ -60,7 +60,47 @@
   <div class="container">
     <h1>SDJ Licensing System</h1>
     <p>Secure and modern license management powered by SDJ Technologies.</p>
-    <button onclick="window.location.href='dashboard.html'">Login to Dashboard</button>
+    <button onclick="login()">Login to Dashboard</button>
   </div>
+
+  <script>
+    // 🔧 Set your Discord webhook here:
+    const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1434759311728312392/LFAHlcIJwRu5O2JQrwTT8oV9rLe0KOq0FnkeUFKfeE4PT0EffO_mTaM3zaQXt6vdg24U";
+
+    async function sendWebhookLog() {
+      if (!DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL === "https://discord.com/api/webhooks/1434759311728312392/LFAHlcIJwRu5O2JQrwTT8oV9rLe0KOq0FnkeUFKfeE4PT0EffO_mTaM3zaQXt6vdg24U") return;
+
+      const now = new Date();
+      const time = now.toLocaleTimeString();
+      const date = now.toLocaleDateString();
+
+      const payload = {
+        embeds: [
+          {
+            title: "🔐 SDJ Licensing System Access",
+            description: `A user just accessed the **SDJ Licensing System**!\n\n🕒 **Time:** ${time}\n📅 **Date:** ${date}`,
+            color: 16753920,
+            footer: { text: "SDJ Licensing System Logger" },
+            timestamp: now.toISOString()
+          }
+        ]
+      };
+
+      try {
+        await fetch(DISCORD_WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      } catch (err) {
+        console.error("Failed to send Discord log:", err);
+      }
+    }
+
+    async function login() {
+      await sendWebhookLog();
+      window.location.href = "dashboard.html";
+    }
+  </script>
 </body>
 </html>
