@@ -6,7 +6,7 @@ import bodyParser from "body-parser";
 const app = express();
 const port = process.env.PORT || 3000;
 const API_SECRET = process.env.API_SECRET || "MySuperSecretKey123!";
-const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL || null;
+const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1434759311728312392/LFAHlcIJwRu5O2JQrwTT8oV9rLe0KOq0FnkeUFKfeE4PT0EffO_mTaM3zaQXt6vdg24U";
 
 app.use(cors());
 app.use(bodyParser.json());
