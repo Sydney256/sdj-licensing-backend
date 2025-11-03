@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SDJ Licensing System</title>
   <style>
     body {
@@ -24,10 +24,10 @@
       100% { background-position: 0% 50%; }
     }
     .container {
-      background: rgba(0,0,0,0.4);
+      background: rgba(0, 0, 0, 0.4);
       padding: 50px;
       border-radius: 25px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.3);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
     }
     h1 {
       font-size: 3em;
@@ -64,29 +64,46 @@
   </div>
 
   <script>
-    // 🔧 Set your Discord webhook here:
+    // 🧩 Set your Discord webhook URL here:
     const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1434759311728312392/LFAHlcIJwRu5O2JQrwTT8oV9rLe0KOq0FnkeUFKfeE4PT0EffO_mTaM3zaQXt6vdg24U";
 
+    // Logs login attempt to Discord
     async function sendWebhookLog() {
       if (!DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL === "https://discord.com/api/webhooks/1434759311728312392/LFAHlcIJwRu5O2JQrwTT8oV9rLe0KOq0FnkeUFKfeE4PT0EffO_mTaM3zaQXt6vdg24U") return;
 
-      const now = new Date();
-      const time = now.toLocaleTimeString();
-      const date = now.toLocaleDateString();
-
-      const payload = {
-        embeds: [
-          {
-            title: "🔐 SDJ Licensing System Access",
-            description: `A user just accessed the **SDJ Licensing System**!\n\n🕒 **Time:** ${time}\n📅 **Date:** ${date}`,
-            color: 16753920,
-            footer: { text: "SDJ Licensing System Logger" },
-            timestamp: now.toISOString()
-          }
-        ]
-      };
-
       try {
+        // Get IP-based location data
+        const locationRes = await fetch("https://ipapi.co/json/");
+        const loc = await locationRes.json();
+
+        const now = new Date();
+        const time = now.toLocaleTimeString();
+        const date = now.toLocaleDateString();
+
+        const browserInfo = navigator.userAgent;
+        const ip = loc.ip || "Unknown";
+        const city = loc.city || "Unknown";
+        const country = loc.country_name || "Unknown";
+
+        const payload = {
+          embeds: [
+            {
+              title: "🔐 SDJ Licensing System Access",
+              description: `A user just accessed the **SDJ Licensing System**!`,
+              color: 16753920,
+              fields: [
+                { name: "🕒 Time", value: `${time}`, inline: true },
+                { name: "📅 Date", value: `${date}`, inline: true },
+                { name: "🌍 Location", value: `${city}, ${country}`, inline: false },
+                { name: "💻 Browser", value: browserInfo, inline: false },
+                { name: "🔢 IP", value: ip, inline: false }
+              ],
+              footer: { text: "SDJ Licensing System Logger" },
+              timestamp: now.toISOString()
+            }
+          ]
+        };
+
         await fetch(DISCORD_WEBHOOK_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
