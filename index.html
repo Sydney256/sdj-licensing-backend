@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SDJ Licensing System</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      height: 100vh;
+      background: linear-gradient(120deg, #ff6600, #ff9900, #ffb84d);
+      background-size: 300% 300%;
+      animation: gradient 6s ease infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+    }
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .container {
+      background: rgba(0,0,0,0.4);
+      padding: 50px;
+      border-radius: 25px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.3);
+    }
+    h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+    }
+    p {
+      opacity: 0.8;
+      font-size: 1.1em;
+      margin-bottom: 30px;
+    }
+    button {
+      background: white;
+      color: #ff6600;
+      border: none;
+      padding: 15px 40px;
+      font-size: 1.1em;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      background: #ff6600;
+      color: white;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>SDJ Licensing System</h1>
+    <p>Secure and modern license management powered by SDJ Technologies.</p>
+    <button onclick="window.location.href='dashboard.html'">Login to Dashboard</button>
+  </div>
+</body>
+</html>
