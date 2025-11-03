@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SDJ License Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background-color: #121212;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      background: linear-gradient(120deg, #ff6600, #ff9900);
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: bold;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    }
+    .tabs {
+      margin-top: 20px;
+      display: flex;
+      gap: 15px;
+    }
+    button.tab {
+      background: #ff6600;
+      border: none;
+      padding: 10px 25px;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button.tab:hover {
+      background: #ff8800;
+      transform: scale(1.05);
+    }
+    .content {
+      margin-top: 40px;
+      width: 90%;
+      max-width: 600px;
+      background: #1e1e1e;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    }
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 8px;
+      background: #2a2a2a;
+      color: white;
+    }
+    button.action {
+      margin-top: 10px;
+      background: #ff6600;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button.action:hover {
+      background: #ff8800;
+      transform: scale(1.05);
+    }
+    pre {
+      background: #101010;
+      padding: 15px;
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <header>SDJ License Dashboard</header>
+  <div class="tabs">
+    <button class="tab" onclick="showTab('create')">Create License</button>
+    <button class="tab" onclick="showTab('verify')">Verify License</button>
+    <button class="tab" onclick="showTab('list')">Admin: View Licenses</button>
+  </div>
+
+  <div id="create" class="content">
+    <h2>Create License</h2>
+    <input id="owner" placeholder="Owner Name (e.g. user123)">
+    <input id="secret" placeholder="Admin Secret Key">
+    <button class="action" onclick="createLicense()">Create License</button>
+    <pre id="createResult"></pre>
+  </div>
+
+  <div id="verify" class="content" style="display:none;">
+    <h2>Verify License</h2>
+    <input id="verifyKey" placeholder="License Key (e.g. SDJ-XXXXXX)">
+    <button class="action" onclick="verifyLicense()">Verify</button>
+    <pre id="verifyResult"></pre>
+  </div>
+
+  <div id="list" class="content" style="display:none;">
+    <h2>Admin License List</h2>
+    <input id="adminSecret" placeholder="Admin Secret Key">
+    <button class="action" onclick="listLicenses()">View All</button>
+    <pre id="listResult"></pre>
+  </div>
+
+  <script>
+    const API_BASE = "https://sdj-licensing-system.onrender.com";
+
+    function showTab(tabId) {
+      document.querySelectorAll(".content").forEach(div => div.style.display = "none");
+      document.getElementById(tabId).style.display = "block";
+    }
+
+    async function createLicense() {
+      const owner = document.getElementById("owner").value;
+      const secret = document.getElementById("secret").value;
+      const res = await fetch(`${API_BASE}/api/create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ owner, secret })
+      });
+      const data = await res.json();
+      document.getElementById("createResult").textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function verifyLicense() {
+      const key = document.getElementById("verifyKey").value;
+      const res = await fetch(`${API_BASE}/api/verify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key })
+      });
+      const data = await res.json();
+      document.getElementById("verifyResult").textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function listLicenses() {
+      const secret = document.getElementById("adminSecret").value;
+      const res = await fetch(`${API_BASE}/api/list`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ secret })
+      });
+      const data = await res.json();
+      document.getElementById("listResult").textContent = JSON.stringify(data, null, 2);
+    }
+  </script>
+</body>
+</html>
